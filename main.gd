@@ -91,6 +91,7 @@ func move_right():
 	compress_line(11,10,9,8)
 	compress_line(15,14,13,12)
 	if board_changed(old_status):
+		
 		spawn_new_tile()
 
 
@@ -107,6 +108,7 @@ func spawn():
 	update_tiles()
 
 func spawn_new_tile():
+	await get_tree().create_timer(0.4).timeout
 	var empty_positions: Array[int] = []
 
 	for i in range(status.size()):
@@ -117,7 +119,7 @@ func spawn_new_tile():
 		return
 
 	var random_index = empty_positions[randi_range(0, empty_positions.size() - 1)]
-	status[random_index] = 2 if randi_range(0, 1) == 0 else 4
+	status[random_index] = 4 if randi_range(1, 10) == 1 else 2
 
 	update_tiles()
 
