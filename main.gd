@@ -1,0 +1,153 @@
+extends Node2D
+
+const TILE_SCENE = preload("res://tile.tscn")
+
+const GRID_SIZE = 4
+const TILE_SIZE = 140
+
+var status: Array[int] = []
+var tiles: Array[Node] = []
+var touch_start := Vector2.ZERO
+var up_was_pressed := false
+
+
+func setup_list():
+	status.clear()
+
+	for i in range(GRID_SIZE * GRID_SIZE):
+		status.append(0)
+
+
+func update_tiles():
+	for i in range(GRID_SIZE * GRID_SIZE):
+		tiles[i].update_tile(status[i])
+
+
+func compress_line(i1: int, i2: int, i3: int, i4: int):
+	var temp: Array[int] = [
+		status[i1],
+		status[i2],
+		status[i3],
+		status[i4]
+	]
+
+	temp = temp.filter(func(value): return value != 0)
+
+	if temp.size() >= 2 and temp[0] == temp[1]:
+		temp[0] += temp[1]
+		temp.remove_at(1)
+
+	if temp.size() >= 3 and temp[1] == temp[2]:
+		temp[1] += temp[2]
+		temp.remove_at(2)
+
+	if temp.size() >= 4 and temp[2] == temp[3]:
+		temp[2] += temp[3]
+		temp.remove_at(3)
+
+	while temp.size() < 4:
+		temp.append(0)
+
+	status[i1] = temp[0]
+	status[i2] = temp[1]
+	status[i3] = temp[2]
+	status[i4] = temp[3]
+
+	update_tiles()
+
+
+func move_up():
+	var old_status = status.duplicate()
+	compress_line(0, 4, 8, 12)
+	compress_line(1, 5, 9, 13)
+	compress_line(2, 6, 10, 14)
+	compress_line(3, 7, 11, 15)
+	
+	if board_changed(old_status):
+		spawn_new_tile()
+	
+func move_down():
+	var old_status = status.duplicate()
+	compress_line(12,8,4,0)
+	compress_line(13,9,5,1)
+	compress_line(14,10,6,2)
+	compress_line(15,11,7,3)
+	if board_changed(old_status):
+		spawn_new_tile()
+	
+func move_left():
+	var old_status = status.duplicate()
+	compress_line(0,1,2,3)
+	compress_line(4,5,6,7)
+	compress_line(8,9,10,11)
+	compress_line(12,13,14,15)
+	if board_changed(old_status):
+		spawn_new_tile()
+	
+func move_right():
+	var old_status = status.duplicate()
+	compress_line(3,2,1,0)
+	compress_line(7,6,5,4)
+	compress_line(11,10,9,8)
+	compress_line(15,14,13,12)
+	if board_changed(old_status):
+		spawn_new_tile()
+
+
+func spawn():
+	
+	for i in range(2):
+		var random_index = randi_range(0, status.size() - 1)
+
+		while status[random_index] != 0:
+			random_index = randi_range(0, status.size() - 1)
+
+		status[random_index] = 2 if randi_range(0, 1) == 0 else 4
+
+	update_tiles()
+
+func spawn_new_tile():
+	var empty_positions: Array[int] = []
+
+	for i in range(status.size()):
+		if status[i] == 0:
+			empty_positions.append(i)
+
+	if empty_positions.is_empty():
+		return
+
+	var random_index = empty_positions[randi_range(0, empty_positions.size() - 1)]
+	status[random_index] = 2 if randi_range(0, 1) == 0 else 4
+
+	update_tiles()
+
+func _ready():
+	
+	
+	setup_list()
+
+	for i in range(GRID_SIZE * GRID_SIZE):
+		var tile = TILE_SCENE.instantiate()
+		add_child(tile)
+		tiles.append(tile)
+
+		var x = i % GRID_SIZE
+		var y = floori(float(i) / GRID_SIZE)
+
+		tile.position = Vector2(x * TILE_SIZE, y * TILE_SIZE)
+
+	spawn()
+
+func board_changed(old_status:Array[int]) -> bool:
+	return old_status != status
+
+func _input(event):
+	if event.is_action_pressed("ui_up"):
+		move_up()
+	if event.is_action_pressed("ui_down"):
+		move_down()
+	if event.is_action_pressed("ui_left"):
+		move_left()
+	if event.is_action_pressed("ui_right"):
+		move_right()
+		
