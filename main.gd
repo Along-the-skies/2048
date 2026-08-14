@@ -11,9 +11,12 @@ var touch_start := Vector2.ZERO
 var up_was_pressed := false
 var score := 0
 var game_over := false
+var game_won := false
+
 @onready var score_label : Label = $ScoreLabel
 @onready var game_over_label : Label = $GameOverLabel
-
+@onready var win_label : Label = $WinLabel
+@onready var RestartButton : Button = $RestartButton
 
 func setup_list():
 	status.clear()
@@ -81,6 +84,11 @@ func compress_line(i1: int, i2: int, i3: int, i4: int):
 
 	update_tiles()
 
+func check_win():
+	if status.has(2048):
+		game_won = true
+		win_label.visible = true
+		$RestartButton.visible = true
 
 func move_up():
 	var old_status = status.duplicate()
@@ -150,7 +158,8 @@ func spawn_new_tile():
 	status[random_index] = 4 if randi_range(1, 10) == 1 else 2
 
 	update_tiles()
-	if not can_move():
+	check_win()
+	if not game_won and not can_move():
 		print("Game Over Hehehe!")
 		show_gameOver()
 	
@@ -159,6 +168,7 @@ func spawn_new_tile():
 func show_gameOver():
 	game_over = true
 	game_over_label.visible = true
+	$RestartButton.visible = true
 
 func _ready():
 	
@@ -178,10 +188,15 @@ func _ready():
 	spawn()
 
 func board_changed(old_status:Array[int]) -> bool:
+	
 	return old_status != status
 
+func _on_restart_button_pressed():
+	print("RESTART PRESSED")
+	get_tree().reload_current_scene()
+
 func _input(event):
-	if game_over:
+	if game_over or game_won:
 		return
 	if event.is_action_pressed("ui_up"):
 		move_up()
