@@ -9,6 +9,10 @@ var status: Array[int] = []
 var tiles: Array[Node] = []
 var touch_start := Vector2.ZERO
 var up_was_pressed := false
+var score := 0
+var game_over := false
+@onready var score_label : Label = $ScoreLabel
+@onready var game_over_label : Label = $GameOverLabel
 
 
 func setup_list():
@@ -18,9 +22,25 @@ func setup_list():
 		status.append(0)
 
 
+func can_move():
+	for i in range(status.size()):
+		if status[i] == 0:
+			return true
+		var x = i%GRID_SIZE
+		var y = floori(float(i)/GRID_SIZE)
+		
+		if x < GRID_SIZE - 1  and status[i] ==status[i+1]:
+			return true
+		if y < GRID_SIZE -1 and status[i] == status[i+GRID_SIZE]:
+			return true
+	return false 
+
+
 func update_tiles():
 	for i in range(GRID_SIZE * GRID_SIZE):
 		tiles[i].update_tile(status[i])
+		
+	score_label.text="Score: " +str(score)
 
 
 func compress_line(i1: int, i2: int, i3: int, i4: int):
@@ -34,14 +54,20 @@ func compress_line(i1: int, i2: int, i3: int, i4: int):
 	temp = temp.filter(func(value): return value != 0)
 
 	if temp.size() >= 2 and temp[0] == temp[1]:
+		var merged_value = temp[0] + temp[1]
+		score += merged_value
 		temp[0] += temp[1]
 		temp.remove_at(1)
 
 	if temp.size() >= 3 and temp[1] == temp[2]:
+		var merged_value = temp[1] + temp[2]
+		score += merged_value
 		temp[1] += temp[2]
 		temp.remove_at(2)
 
 	if temp.size() >= 4 and temp[2] == temp[3]:
+		var merged_value = temp[2] + temp [3]
+		score +=merged_value
 		temp[2] += temp[3]
 		temp.remove_at(3)
 
@@ -108,7 +134,7 @@ func spawn():
 	update_tiles()
 
 func spawn_new_tile():
-	await get_tree().create_timer(0.4).timeout
+	await get_tree().create_timer(0.1).timeout
 	var empty_positions: Array[int] = []
 
 	for i in range(status.size()):
@@ -116,12 +142,23 @@ func spawn_new_tile():
 			empty_positions.append(i)
 
 	if empty_positions.is_empty():
+		if not can_move():
+			print("Game Over Hehehe!")
 		return
 
 	var random_index = empty_positions[randi_range(0, empty_positions.size() - 1)]
 	status[random_index] = 4 if randi_range(1, 10) == 1 else 2
 
 	update_tiles()
+	if not can_move():
+		print("Game Over Hehehe!")
+		show_gameOver()
+	
+	
+
+func show_gameOver():
+	game_over = true
+	game_over_label.visible = true
 
 func _ready():
 	
@@ -144,6 +181,8 @@ func board_changed(old_status:Array[int]) -> bool:
 	return old_status != status
 
 func _input(event):
+	if game_over:
+		return
 	if event.is_action_pressed("ui_up"):
 		move_up()
 	if event.is_action_pressed("ui_down"):
@@ -152,4 +191,24 @@ func _input(event):
 		move_left()
 	if event.is_action_pressed("ui_right"):
 		move_right()
+	
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			touch_start = event.position
+		else:
+			var swipe = event.position - touch_start
+			
+			if swipe.length()< 50 :
+				return
+			if abs(swipe.x)>abs(swipe.y):
+				if swipe.x > 0:
+					move_right()
+				else:
+					move_left()
+			
+			else:
+				if swipe.y  > 0 :
+					move_down()
+				else:
+					move_up()
 		

@@ -4,3 +4,29 @@
 
 [node name="Main" type="Node2D" unique_id=18057559]
 script = ExtResource("1_glv2v")
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=2143368081]
+offset_left = 187.0
+offset_top = -112.0
+offset_right = 248.0
+offset_bottom = -89.0
+text = "Score: 0"
+
+[node name="GameOverLabel" type="Label" parent="." unique_id=1982564487]
+z_index = 20
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.5
+offset_top = -11.5
+offset_right = 48.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.7934085, 0, 0.060282372, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "GAME OVER!"
