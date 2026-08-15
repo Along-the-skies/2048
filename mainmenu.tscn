@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://kwx4iy8odqok"]
+
+[ext_resource type="Script" uid="uid://cup31m12qermj" path="res://mainmenu.gd" id="1_cmhrf"]
+
+[node name="Mainmenu" type="Control" unique_id=2135863625]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cmhrf")
+
+[node name="TitleLabel" type="Label" parent="." unique_id=293076649]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Mini Game Hub"
+
+[node name="Game2048button" type="Button" parent="." unique_id=1226021622]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "2048"
+
+[node name="QuickClickButton" type="Button" parent="." unique_id=1538224654]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Quick Click"
+
+[connection signal="pressed" from="Game2048button" to="." method="_on_game_2048_button_pressed"]
+[connection signal="pressed" from="QuickClickButton" to="." method="_on_quick_click_pressed"]

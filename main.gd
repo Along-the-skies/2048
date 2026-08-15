@@ -12,6 +12,7 @@ var up_was_pressed := false
 var score := 0
 var game_over := false
 var game_won := false
+var ready_input := true
 
 @onready var score_label : Label = $ScoreLabel
 @onready var game_over_label : Label = $GameOverLabel
@@ -142,7 +143,9 @@ func spawn():
 	update_tiles()
 
 func spawn_new_tile():
+	ready_input = false
 	await get_tree().create_timer(0.1).timeout
+	ready_input = true
 	var empty_positions: Array[int] = []
 
 	for i in range(status.size()):
@@ -196,7 +199,7 @@ func _on_restart_button_pressed():
 	get_tree().reload_current_scene()
 
 func _input(event):
-	if game_over or game_won:
+	if game_over or game_won and ready_input:
 		return
 	if event.is_action_pressed("ui_up"):
 		move_up()

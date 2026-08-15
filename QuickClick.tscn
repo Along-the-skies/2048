@@ -1,9 +1,76 @@
 [gd_scene format=3 uid="uid://cvtft3obly3sf"]
 
-[node name="Control" type="Control" unique_id=597778120]
+[ext_resource type="Script" uid="uid://dmlojimdt68n" path="res://quick_click.gd" id="1_avyrj"]
+[ext_resource type="Texture2D" uid="uid://cs6jou7h4vtfm" path="res://Target_button.png" id="2_7ibhp"]
+[ext_resource type="Texture2D" uid="uid://dpaf5ag2r80co" path="res://Bg.png" id="3_64on8"]
+
+[node name="QuickClick" type="Control" unique_id=597778120]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_avyrj")
+
+[node name="RestartButton" type="Button" parent="." unique_id=757001009]
+layout_mode = 0
+offset_left = 529.0
+offset_top = 349.0
+offset_right = 617.0
+offset_bottom = 380.0
+text = "Play Again"
+
+[node name="GameTimer" type="Timer" parent="." unique_id=619341012]
+wait_time = 30.0
+one_shot = true
+
+[node name="TimerLabel" type="Label" parent="." unique_id=831630659]
+z_index = 2
+layout_mode = 0
+offset_left = 943.0
+offset_top = 37.0
+offset_right = 1013.0
+offset_bottom = 60.0
+theme_override_colors/font_outline_color = Color(0.05490196, 0.08235294, 0.18039216, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 32
+text = "Time : 30"
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=331840186]
+z_index = 5
+layout_mode = 0
+offset_left = 153.0
+offset_top = 38.0
+offset_right = 210.0
+offset_bottom = 87.0
+text = "Score:0
+"
+
+[node name="TargetButton" type="TextureButton" parent="." unique_id=693248492]
+z_index = 5
+layout_mode = 0
+offset_right = 120.0
+offset_bottom = 120.0
+texture_normal = ExtResource("2_7ibhp")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Background" type="TextureRect" parent="." unique_id=750612635]
+z_index = -2
+layout_mode = 0
+offset_right = 1158.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("3_64on8")
+expand_mode = 1
+
+[node name="ResultLabel" type="Label" parent="." unique_id=1336741283]
+layout_mode = 0
+offset_left = 564.0
+offset_top = 247.0
+offset_right = 604.0
+offset_bottom = 270.0
+
+[connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="TargetButton" to="." method="_on_target_button_pressed"]
