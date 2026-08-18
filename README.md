@@ -1,62 +1,26 @@
 # Mini Game Hub
 
-A collection of small games made with Godot.
+### What is Mini Game Hub?
+Mini Game Hub is a game , which contain other small games i made using godot
 
-## 🎮 Games
+### Where did i got this idea ?
+I made a similiar project in scratch. since Scratch projects are not allowed in Stardance, I decided to recreate it in Godot
 
-### 🟨 2048
+##Games currently availibe :- 
 
-A classic 2048 puzzle game.
-
-**Features:**
-- Keyboard controls
-- Mobile swipe controls
-- Score system
-- Win detection
-- Game-over detection
-- Restart button
-- Simple and responsive UI
-
-### 👆 QuickClick
-
-A simple clicking game focused on improving your aim and reaction.
-
-**Features:**
-- Simple gameplay
-- Aim and reaction challenge
-
-## 🕹️ Controls
-
-### 2048 — PC
-
-- ⬆️ Up Arrow — Move Up
-- ⬇️ Down Arrow — Move Down
-- ⬅️ Left Arrow — Move Left
-- ➡️ Right Arrow — Move Right
-
-### 2048 — Mobile
-
-Swipe in the direction you want to move.
-
+### 2048 
 ### QuickClick
 
-- 🖱️ Click the target to play
+## 2048
+### Classic 2048 game recreated using Godot. u can either use arrows or even swipe on ur screen if u got TouchScreen
+--Have Win screen,game over screen and a restart Button
 
-## 🏠 Main Menu
+## Quick Click
+Simple Aim Practice game . 
+NB :- Images/assets of this game is downloaded from google giving credits !
 
-The project includes a main menu where you can select and launch the available mini-games.
+--10 secs to click random appearing Target.
 
-## 🛠️ Built With
+Made by Along-the-skies aka Vasudev Onden aka Paachu 
 
-- [Godot](https://godotengine.org/)
-- GDScript
-
-## 📁 Project Structure
-
-```text
-Mini-Game-Hub/
-├── Mainmenu.tscn
-├── Main.tscn
-├── QuickClick.tscn
-├── scripts/
-└── assets/
+feel free to report bugs 🪲

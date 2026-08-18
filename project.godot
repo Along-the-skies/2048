@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="2048"
-run/main_scene="uid://dym5dpe7674p6"
+run/main_scene="uid://kwx4iy8odqok"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
